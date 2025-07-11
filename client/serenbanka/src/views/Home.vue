@@ -14,18 +14,17 @@
         <img src="/static/index/side.png" class="img-side" />
 
         <div class="menu-items">
-          <button
-            class="menu-item"
+          <ImgButton
             v-for="(item, index) in menuList"
+            class="menu-item"
             :key="index"
-            @mouseenter="setStatus(index, 'hover')"
-            @mouseleave="setStatus(index, 'default')"
-            @mousedown="setStatus(index, 'active')"
-            @mouseup="setStatus(index, 'default')"
-            draggable="false"
-          >
-            <img :src="getImgSrc(index)" class="img-menu" />
-          </button>
+            :default="item.default"
+            :hover="item.hover"
+            :active="item.active"
+            :hover-sound="'/static/sound/buttonhover.ogg'"
+            :click-sound="'/static/sound/buttonclick.ogg'"
+            @click="() => menuClick(item)"
+          />
         </div>
       </div>
     </div>
@@ -35,69 +34,81 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import useSoundStore from "@/stores/soundStore";
+import useViewStore, { type ViewType } from "@/stores/viewStore";
+import ImgButton from "@/components/ImgButton.vue";
 
+const viewStoure = useViewStore();
 const soundStore = useSoundStore();
 
-const menuList = [
+let timer: number | null = null;
+
+type MenuItem = {
+  default: string;
+  hover: string;
+  active: string;
+  view: ViewType;
+};
+const menuList: MenuItem[] = [
   {
     default: "/static/index/2285.png",
     hover: "/static/index/2052.png",
     active: "/static/index/2059.png",
+    view: "Game",
   },
   {
     default: "/static/index/2282.png",
     hover: "/static/index/2073.png",
     active: "/static/index/2066.png",
+    view: "Load",
   },
   {
     default: "/static/index/2279.png",
     hover: "/static/index/2087.png",
     active: "/static/index/2080.png",
+    view: "Op",
   },
   {
     default: "/static/index/2276.png",
     hover: "/static/index/2101.png",
     active: "/static/index/2094.png",
+    view: "Op",
   },
   {
     default: "/static/index/2273.png",
     hover: "/static/index/2155.png",
     active: "/static/index/2148.png",
+    view: "Op",
   },
   {
     default: "/static/index/2270.png",
     hover: "/static/index/2169.png",
     active: "/static/index/2162.png",
+    view: "Op",
   },
 ];
 
-const statusList = ref<string[]>(Array(menuList.length).fill("default"));
-const setStatus = (index: number, status: "default" | "hover" | "active") => {
-  statusList.value[index] = status;
-  if (status === "hover") soundStore.play("SOUND1", "/static/sound/buttonhover.ogg");
-  if (status === "active") soundStore.play("SOUND1", "/static/sound/buttonclick.ogg");
-};
-const getImgSrc = (index: number) => {
-  const item = menuList[index];
-  const status = statusList.value[index];
-  if (status === "hover") return item.hover;
-  if (status === "active") return item.active;
-  return item.default;
+const menuClick = (item: MenuItem) => {
+  soundStore.stop("BGM");
+  if (timer) {
+    clearTimeout(timer);
+    timer = null;
+  }
+  viewStoure.setView(item.view);
 };
 
 onMounted(() => {
-  setTimeout(() => {
-    soundStore.play("BGM", "/static/sound/serenbanka.ogg");
+  timer = setTimeout(() => {
+    if (timer) soundStore.play("BGM", "/static/sound/serenbanka.ogg");
   }, 500);
 
-  setTimeout(() => {
-    soundStore.play("BGM", "/static/sound/yuzu.ogg");
+  timer = setTimeout(() => {
+    if (timer) soundStore.play("BGM", "/static/sound/yuzu.ogg");
   }, 2000);
 
-  setTimeout(() => {
-    soundStore.play("BGM", "/static/sound/SongOp.ogg", true);
+  timer = setTimeout(() => {
+    if (timer) soundStore.play("BGM", "/static/sound/SongOp.ogg", true);
   }, 3500);
 });
 </script>

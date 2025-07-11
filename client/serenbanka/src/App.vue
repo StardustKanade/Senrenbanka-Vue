@@ -11,7 +11,6 @@ import useViewStore from "@/stores/viewStore";
 const viewStore = useViewStore();
 
 const Component = computed(() => {
-  console.log(viewStore.view);
   if (!viewStore.view) return null;
   return defineAsyncComponent(() => import(`@/views/${viewStore.view}.vue`));
 });
@@ -20,15 +19,13 @@ const Component = computed(() => {
 <style>
 .app-fade-enter-active {
   transition: opacity 1s ease;
-  position: absolute;
-  width: 100%;
+  position: absolute !important;
   opacity: 0;
 }
 
 .app-fade-leave-active {
   transition: opacity 1s ease;
-  position: absolute;
-  width: 100%;
+  position: absolute !important;
 }
 
 .app-fade-enter,

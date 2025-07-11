@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-type ViewType = "Op" | "Home";
+export type ViewType = "Op" | "Home" | "Game" | "Load";
 
 const useViewStore = defineStore("view", () => {
   const view = ref<ViewType>("Op");
