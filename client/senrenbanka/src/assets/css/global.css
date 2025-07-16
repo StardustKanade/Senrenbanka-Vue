@@ -1,0 +1,34 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000;
+}
+
+img {
+  vertical-align: middle;
+  -webkit-user-drag: none; /* Chrome, Safari */
+  -moz-user-drag: none; /* Firefox */
+  -ms-user-drag: none; /* Internet Explorer */
+  user-drag: none; /* 标准属性 */
+}
+
+button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+#game {
+  position: relative;
+  overflow: hidden;
+  width: min(100vw, calc(100vh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  box-sizing: border-box;
+  background: #ffffff; /* 可选，内容背景色 */
+}
