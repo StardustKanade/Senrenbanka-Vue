@@ -20,15 +20,15 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { usePageStore } from "@/stores/pageStore";
 
-const router = useRouter();
+const pageStore = usePageStore();
 
 const video = ref<HTMLVideoElement | undefined>();
 const muted = ref(true);
 
 const toHome = () => {
-  router.push({ name: "Home" });
+  pageStore.pageTo("Home");
 };
 
 onMounted(() => {

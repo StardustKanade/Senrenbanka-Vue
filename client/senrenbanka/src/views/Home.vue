@@ -35,13 +35,12 @@
 
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { useRouter } from "vue-router";
 import useSoundStore from "@/stores/soundStore";
 import ImgButton from "@/components/ImgButton.vue";
-import type { ViewName } from "@/router";
+import { type PageName, usePageStore } from "@/stores/pageStore";
 
-const router = useRouter();
 const soundStore = useSoundStore();
+const pageStore = usePageStore();
 
 let timer: number | null = null;
 
@@ -49,14 +48,14 @@ type MenuItem = {
   default: string;
   hover: string;
   active: string;
-  view: ViewName;
+  view: PageName;
 };
 const menuList: MenuItem[] = [
   {
     default: "/static/index/2285.png",
     hover: "/static/index/2052.png",
     active: "/static/index/2059.png",
-    view: "Game",
+    view: "Op",
   },
   {
     default: "/static/index/2282.png",
@@ -95,7 +94,7 @@ const menuClick = (item: MenuItem) => {
     clearTimeout(timer);
     timer = null;
   }
-  router.push({ name: item.view });
+  pageStore.pageTo(item.view);
 };
 
 const showAnimation = () => {
@@ -105,6 +104,7 @@ const showAnimation = () => {
 };
 
 onMounted(() => {
+  console.log(soundStore.isPlaying("BGM"));
   if (soundStore.isPlaying("BGM")) return;
   timer = setTimeout(() => {
     if (timer) soundStore.play("BGM", "/static/sound/serenbanka.ogg");

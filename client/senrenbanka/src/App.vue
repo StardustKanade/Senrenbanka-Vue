@@ -1,10 +1,14 @@
 <template>
-  <transition name="app-fade">
-    <router-view />
+  <transition name="app-fade" mode="out-in">
+    <component :is="pageStore.pageComponent" :key="pageStore.pageName" />
   </transition>
 </template>
 
-<script setup></script>
+<script setup>
+import { usePageStore } from "@/stores/pageStore";
+
+const pageStore = usePageStore();
+</script>
 
 <style>
 .app-fade-enter-active {

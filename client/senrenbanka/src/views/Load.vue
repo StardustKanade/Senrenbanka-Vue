@@ -41,7 +41,7 @@
         :hover-sound="'/static/sound/buttonhover.ogg'"
         :click-sound="'/static/sound/buttonreturn.ogg'"
         @hover=""
-        @click="router.push({ name: 'Home' })"
+        @click="pageStore.pageTo('Home')"
       />
     </div>
   </div>
@@ -50,9 +50,9 @@
 <script setup lang="ts">
 import ImgButton from "@/components/ImgButton.vue";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { usePageStore } from "@/stores/pageStore";
 
-const router = useRouter();
+const pageStore = usePageStore();
 
 const defaultData = (index: number) => {
   // 计算主编号（前四位）
